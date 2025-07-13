@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  email       String   @unique
+  name        String
+  password    String
+  isVerified  Boolean  @default(false)
+  verificationToken String?
+  resetToken  String?
+  resetTokenExpiry DateTime?
+  language    String   @default("en")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  subscriptions Subscription[]
+  transactions  Transaction[]
+  
+  @@map("users")
+}
+
+model Subscription {
+  id            String   @id @default(cuid())
+  userId        String
+  planId        String
+  status        String   // active, expired, cancelled, pending
+  startDate     DateTime
+  endDate       DateTime
+  autoRenew     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  // Relations
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+  
+  @@map("subscriptions")
+}
+
+model Transaction {
+  id              String   @id @default(cuid())
+  userId          String
+  subscriptionId  String?
+  amount          Float
+  currency        String   @default("USDT")
+  paymentMethod   String   // usdt-trc20, usdt-erc20
+  walletAddress   String
+  transactionHash String?
+  status          String   // pending, completed, failed, expired
+  orderRef        String   @unique
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscription    Subscription? @relation(fields: [subscriptionId], references: [id])
+  
+  @@map("transactions")
+}
+
+model AdminUser {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("admin") // admin, superadmin
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("admin_users")
+}
