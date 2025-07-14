@@ -64,7 +64,7 @@ export function AdminAuthProvider({ children }: AdminAuthProviderProps) {
           isAuthenticated: false
         })
       }
-    } catch (error) {
+    } catch {
       setAuthState({
         admin: null,
         isLoading: false,

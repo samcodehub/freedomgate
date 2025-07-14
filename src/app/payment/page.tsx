@@ -49,7 +49,7 @@ export default function PaymentPage() {
     }
   }, [isAuthenticated, isLoading, router, searchParams])
 
-  const handlePaymentSuccess = (transactionData: any) => {
+  const handlePaymentSuccess = (transactionData: { subscription: unknown; transaction: unknown; message: string }) => {
     // Handle successful payment
     console.log('Payment successful:', transactionData)
     router.push('/dashboard?payment=success')
@@ -165,7 +165,6 @@ export default function PaymentPage() {
           <div className="lg:col-span-2">
             <PaymentInterface
               plan={selectedPlan}
-              user={user}
               onPaymentSuccess={handlePaymentSuccess}
               onPaymentError={handlePaymentError}
             />

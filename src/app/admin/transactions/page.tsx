@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAdminAuth } from '@/lib/admin-auth-context'
 import axios from 'axios'
@@ -10,10 +10,7 @@ import {
   ChevronRightIcon,
   ArrowLeftIcon,
   CurrencyDollarIcon,
-  CheckIcon,
-  XMarkIcon,
-  ClockIcon,
-  LinkIcon
+  CheckIcon
 } from '@heroicons/react/24/outline'
 
 interface Transaction {
@@ -73,7 +70,7 @@ export default function AdminTransactions() {
   }, [isAuthenticated, isLoading, router])
 
   // Fetch transactions
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     if (!isAuthenticated) return
     
     try {
@@ -99,11 +96,11 @@ export default function AdminTransactions() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [isAuthenticated, pagination.page, pagination.limit, search, statusFilter])
 
   useEffect(() => {
     fetchTransactions()
-  }, [isAuthenticated, pagination.page, search, statusFilter])
+  }, [fetchTransactions])
 
   const handleStatusUpdate = async (transactionId: string, newStatus: string) => {
     try {

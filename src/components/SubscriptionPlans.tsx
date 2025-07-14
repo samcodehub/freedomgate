@@ -1,11 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+
 import { useTranslation } from 'react-i18next'
 import { CheckIcon, StarIcon } from '@heroicons/react/20/solid'
 import { CurrencyDollarIcon, ClockIcon } from '@heroicons/react/24/outline'
 import { SUBSCRIPTION_PLANS } from '@/lib/constants'
-import { formatPrice } from '@/lib/utils'
 import { SubscriptionPlan } from '@/types'
 
 interface SubscriptionPlansProps {
@@ -20,7 +19,6 @@ export default function SubscriptionPlans({
   showHeader = true 
 }: SubscriptionPlansProps) {
   const { t } = useTranslation()
-  const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly')
 
   const handlePlanSelect = (plan: SubscriptionPlan) => {
     if (onPlanSelect) {

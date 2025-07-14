@@ -65,7 +65,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           isAuthenticated: false
         })
       }
-    } catch (error) {
+    } catch {
       setAuthState({
         user: null,
         isLoading: false,
@@ -147,7 +147,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const errorData = error.response?.data
         if (errorData?.details) {
           // Handle validation errors
-          const validationErrors = errorData.details.map((err: any) => err.message).join(', ')
+          const validationErrors = errorData.details.map((err: { message: string }) => err.message).join(', ')
           return { success: false, error: validationErrors }
         }
         return { 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuth } from '@/lib/auth-context'
 import { useTranslation } from 'react-i18next'
@@ -41,7 +41,7 @@ export default function DashboardPage() {
   const [dataLoading, setDataLoading] = useState(false)
 
   // Fetch subscription data
-  const fetchSubscriptionData = async () => {
+  const fetchSubscriptionData = useCallback(async () => {
     if (!user?.id) return
     
     setDataLoading(true)
@@ -59,7 +59,7 @@ export default function DashboardPage() {
     } finally {
       setDataLoading(false)
     }
-  }
+  }, [user?.id])
 
   // Check for payment success notification
   useEffect(() => {
@@ -77,14 +77,14 @@ export default function DashboardPage() {
       // Refresh subscription data after payment success
       fetchSubscriptionData()
     }
-  }, [searchParams])
+  }, [searchParams, fetchSubscriptionData])
 
   // Fetch subscription data when user is authenticated
   useEffect(() => {
     if (isAuthenticated && user) {
       fetchSubscriptionData()
     }
-  }, [isAuthenticated, user])
+  }, [isAuthenticated, user, fetchSubscriptionData])
 
   // Redirect if not authenticated
   useEffect(() => {

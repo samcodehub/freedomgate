@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAdminAuth } from '@/lib/admin-auth-context'
 import axios from 'axios'
@@ -64,7 +64,7 @@ export default function AdminSubscriptions() {
   }, [isAuthenticated, isLoading, router])
 
   // Fetch subscriptions
-  const fetchSubscriptions = async () => {
+  const fetchSubscriptions = useCallback(async () => {
     if (!isAuthenticated) return
     
     try {
@@ -90,11 +90,11 @@ export default function AdminSubscriptions() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [isAuthenticated, pagination.page, pagination.limit, search, statusFilter])
 
   useEffect(() => {
     fetchSubscriptions()
-  }, [isAuthenticated, pagination.page, search, statusFilter, fetchSubscriptions])
+  }, [fetchSubscriptions])
 
   const handleStatusUpdate = async (subscriptionId: string, newStatus: string) => {
     try {

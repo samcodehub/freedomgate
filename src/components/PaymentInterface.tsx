@@ -12,22 +12,16 @@ import {
 } from '@heroicons/react/24/outline'
 import QRCode from 'qrcode'
 import { formatPrice, generateOrderId } from '@/lib/utils'
-import { SubscriptionPlan, Payment } from '@/types'
+import { SubscriptionPlan } from '@/types'
 
 interface PaymentInterfaceProps {
   plan: SubscriptionPlan
-  user: {
-    id: string
-    name: string
-    email: string
-  }
-  onPaymentSuccess: (transactionData: any) => void
+  onPaymentSuccess: (transactionData: { subscription: unknown; transaction: unknown; message: string }) => void
   onPaymentError: (error: string) => void
 }
 
 export default function PaymentInterface({
   plan,
-  user,
   onPaymentSuccess,
   onPaymentError
 }: PaymentInterfaceProps) {

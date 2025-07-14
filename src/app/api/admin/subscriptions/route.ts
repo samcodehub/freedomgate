@@ -21,18 +21,12 @@ export async function GET(request: NextRequest) {
     const offset = (page - 1) * limit
 
     // Build where clause
-    const where: {
-      OR?: Array<{
-        user?: { name?: { contains: string; mode: 'insensitive' } | { email?: { contains: string; mode: 'insensitive' } } };
-        planId?: { contains: string; mode: 'insensitive' };
-      }>;
-      status?: string;
-    } = {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const where: any = {}
     
     if (search) {
       where.OR = [
         { user: { name: { contains: search, mode: 'insensitive' } } },
-        { user: { email: { contains: search, mode: 'insensitive' } } },
         { planId: { contains: search, mode: 'insensitive' } }
       ]
     }

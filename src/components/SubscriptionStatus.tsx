@@ -1,6 +1,6 @@
 'use client'
 
-import { useTranslation } from 'react-i18next'
+
 import { 
   CheckCircleIcon, 
   ExclamationTriangleIcon,
@@ -24,7 +24,6 @@ interface SubscriptionStatusProps {
 }
 
 export default function SubscriptionStatus({ subscription }: SubscriptionStatusProps) {
-  const { t } = useTranslation()
 
   const getStatusColor = (status: string) => {
     switch (status) {

@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import { Bars3Icon, XMarkIcon, ShieldCheckIcon, UserCircleIcon } from '@heroicons/react/24/outline'
-import { cn } from '@/lib/utils'
 import { useAuth } from '@/lib/auth-context'
 import LanguageSwitcher from './LanguageSwitcher'
 
